@@ -213,12 +213,12 @@ P = expr(P)
 P = expr2bdd(P)
 
 R_1 = R
-i = 0
+i = 1
 while True:
-    R_1 = R_1 | compose(R_1, R)
     if (P & R_1.compose({y1:x1, y2:x2, y3:x3, y4:x4, y5:y5}).smoothing({x1,x2,x3,x4,x5}).equivalent(True)):
         print("K={}".format(i))
         break
     else:
         print("Not Done")
+    R_1 = compose(R_1, R)
     i += 1
