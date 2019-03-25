@@ -1,5 +1,4 @@
 from pyeda.inter import *
-import time
 
 dectobindict = {
     0  : "0 0 0 0 0",
@@ -96,9 +95,6 @@ def edgeBF(i, j):
 
     bf = fx + " & " + fy
     print("Boolean Formula for Edge({}, {}):\n".format(i,j) ,bf)
-    bf = expr(bf)
-    print(bf)
-    print("\n")
     
     return bf
 
@@ -106,11 +102,11 @@ def edgeBF(i, j):
 F = edgeBF(0, 3)  # first edge
 for i in range(1, 32): # edge condition 1
     j = (i + 3) % 32
-    F = F | edgeBF(i,j)  # ORing all edges to create massive BF  #+ " | " +
+    F = F + " | " + edgeBF(i,j)  # ORing all edges to create massive BF
 
 for i in range(0, 32): # edge condition 2
     j = (i + 7) % 32
-    F = F | edgeBF(i,j)  # ORing all edges to create massive BF  #+ " | " +
+    F = F + " | " + edgeBF(i,j)  # ORing all edges to create massive BF
 
 F = expr(F)
 print("\nFull BF -> F:\n", F)
@@ -154,8 +150,7 @@ def getRstar(R):
     while True:
         Hp = H
         H = compose(Hp, R) | Hp
-        #print("H:\n", list(H.satisfy_all()))
-        #time.sleep(3)
+        print("counting...")
         if (Hp.equivalent(H)):
            break
     

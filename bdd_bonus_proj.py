@@ -146,28 +146,31 @@ def compose(R1, R2):
 
     return R4
 
-def getRstar(R):
-    H = R
+# def getRstar(R):
+#     H = R
 
-    while True:
-        Hp = H
-        H = compose(Hp, R) | Hp
-        if (Hp.equivalent(H)):
-           break
+#     while True:
+#         Hp = H
+#         H = compose(Hp, R) | Hp
+#         if (Hp.equivalent(H)):
+#            break
     
-    return H
+#     return H
 
-R_star = getRstar(R)
-print(R_star)
+# R_star = getRstar(R)
+# print(R_star)
 
-if (R_star.equivalent(True)):
-    print("DONE!")
-else:
-    print("Not DONE")
+# if (R_star.equivalent(True)):
+#     print("DONE!")
+# else:
+#     print("Not DONE")
 
 
 # BONUS
 def evenBF(i):
+    print(i, "in binary")
+    print(dectobindict[i].split())
+
     if int(dectobindict[i].split()[0]) == 0:
         fx = "~x1"
     else:
@@ -190,9 +193,6 @@ def evenBF(i):
 
     bf = fx
     print("Boolean Formula for P:\n", bf)
-    bf = expr(bf)
-    print(bf)
-    print("\n")
     
     return bf
 
@@ -203,8 +203,22 @@ p3 = bddvar('p3')
 p4 = bddvar('p4')
 p5 = bddvar('p5')
 
-for i in range(0, 32):
+P = evenBF(0)
+for i in range(1, 32):
     if (i % 2 == 0):
-        evenBF(i)
+        P = P + " | " + evenBF(i)
 
-    
+print(P)
+P = expr(P)
+P = expr2bdd(P)
+
+R_1 = R
+i = 0
+while True:
+    R_1 = R_1 | compose(R_1, R)
+    if (P & R_1.compose({y1:x1, y2:x2, y3:x3, y4:x4, y5:y5}).smoothing({x1,x2,x3,x4,x5}).equivalent(True)):
+        print("K={}".format(i))
+        break
+    else:
+        print("Not Done")
+    i += 1
